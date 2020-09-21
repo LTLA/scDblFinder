@@ -15,10 +15,6 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@v2
 
-      - name: Set BiocManager version
-        run: BiocManager::install(version = "devel", ask = FALSE)
-        shell: Rscript {0}
-
       - name: Query dependencies
         run: |
           saveRDS(remotes::dev_package_deps(dependencies = TRUE, repos = c(getOption('repos'), BiocManager::repositories())), 'depends.Rds', version = 2)
@@ -34,6 +30,7 @@ jobs:
       - name: Install dependencies
         run: |
           remotes::install_deps(dependencies = TRUE, repos = BiocManager::repositories(), Ncpu = 2L)
+          BiocManager::install('ensembldb')
           remotes::install_cran('rcmdcheck', Ncpu = 2L)
         shell: Rscript {0}
 
