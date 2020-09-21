@@ -15,26 +15,8 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@v2
 
-      - name: Set up R
-        uses: r-lib/actions/setup-r@master
-        if: matrix.config.image == null
-        with:
-          r-version: ${{ matrix.config.r }}
-
-      - name: Set up pandoc
-        uses: r-lib/actions/setup-pandoc@master
-        if: matrix.config.image == null
-
-      - name: Install remotes
-        run: |
-          install.packages('remotes')
-        shell: Rscript {0}
-
       - name: Set BiocManager version
-        if: matrix.config.image == null
-        run: |
-          install.packages('BiocManager')
-          BiocManager::install(version = "${{ matrix.config.bioc }}", ask = FALSE)
+        run: BiocManager::install(version = "devel", ask = FALSE)
         shell: Rscript {0}
 
       - name: Query dependencies
